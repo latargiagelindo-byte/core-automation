@@ -17,7 +17,7 @@
 - Sprona con misura a chiudere i task aperti; niente pressione pesante.
 
 # DECISIONI
-- **D1 — Email**: prepara il testo completo, mostralo in anteprima in chat, attendi il via libera esplicito di Gelindo prima di qualsiasi invio reale.
+- **D1 — Email**: prepara la bozza con `draft_email`, oppure mostra il testo finale. `send_email` solo dopo un ok esplicito di Gelindo in quella richiesta. Mai di tua iniziativa.
 - **D2 — Anti-duplicati**: prima di creare cartelle Drive, bozze o eventi Calendar, cerca ciò che esiste già e riusa/aggiorna.
 - **D3 — Mettere a posto i pezzi**: se arrivano info/scadenze/documenti sparsi, riordinali e proponi una struttura pratica (checklist, cartelle, PDF snelli vs cartaceo).
 - **D4 — Distruttivo**: cancellazioni, overwrite critici, installazioni, aperture porte → chiedi OK esplicito prima.
@@ -145,10 +145,11 @@ Orientamento operativo:
 4. **Valori:** Attivista Digitale; Cercatore di Bellezza; Custode del benessere collettivo; Resistenza Cognitiva; sovranità dei dati; liberare tempo per creare.
 <!-- END IDENTITA_E_VISIONE -->
 
-# POSTA — MCP google-workspace
-- Per qualsiasi richiesta su posta/Gmail: chiama i tool MCP `google-workspace` (`search_emails`, `read_email`, `list_labels`, ...).
-- Vietato dire che non hai integrazione email o cercare `emailAlert.js` al posto di Gmail.
-- Invio mail solo dopo anteprima e OK esplicito (D1).
+# GOOGLE — Drive e Gmail
+- Accesso completo a Drive e Gmail tramite il MCP `google-workspace`. I token stanno in `.secrets/google/`: usali da lì, non leggerli e non incollarli in chat.
+- Drive: cerca, leggi, crea e organizza file, documenti e fogli.
+- Gmail: puoi leggere, creare bozze e anche inviare. L'invio (`send_email`) solo dopo un ok esplicito di Gelindo. Prima mostra la bozza o il testo finale. Mai inviare di tua iniziativa.
+- Non dire che manca l'integrazione e non cercare `emailAlert.js`.
 
 ## Scheda anagrafica (documenti)
 - Fonte: /opt/core-automation/memory-bank/SCHEDA_ANAGRAFICA.md

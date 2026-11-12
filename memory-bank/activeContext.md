@@ -3,14 +3,18 @@
 Aggiornato: 2026-11-12
 
 ## Adesso
-OmniRoute risponde. Cline lavora da lì.
-Disco del CX23 alleggerito: tolti i tar notturni.
-Sessione AWS scaduta, rinnovo posticipato. Cline non ne ha bisogno.
+OmniRoute risponde. Disco del CX23 alleggerito.
+Sessione AWS scaduta e posticipata.
+
+## Google
+Drive e Gmail sono aperti dal MCP `google-workspace`. Token rinnovato, in `.secrets/google/`.
+Accesso completo, tool di invio compreso.
+Una mail si prepara in bozza (o se ne mostra il testo). `send_email` solo dopo un ok esplicito di Gelindo.
 
 ## Memoria
-Si sovrascrivono, e restano corti: `activeContext.md` e `progress.md`.
-Lo storico sta nei commit, non in questi file.
+`activeContext.md` e `progress.md` si sovrascrivono e restano corti.
+Lo storico sta nei commit.
 
 ## Backup
 Nessun cron delle 03:00.
-Se serve lo stato di OmniRoute: `bin/backup_omniroute.sh` (massimo 2 copie in `/var/backups/omniroute`).
+Stato OmniRoute, solo se serve: `bin/backup_omniroute.sh` (massimo 2 copie).
