@@ -1,0 +1,56 @@
+---
+description: Regole operative AWS Greenfield Adventures (CX23) — sempre attive
+alwaysApply: true
+---
+
+# AWS infrastructure — regole operative (sempre)
+
+Fonte dettagliata e inventario risorse: `/opt/core-automation/CONTESTO_AWS_E_SVILUPPI.md`
+(e copia locale ufficiale `CONTESTO_AWS_E_SVILUPPI.md` in questa cartella progetto).
+Allineare ogni intervento AWS a quel documento; aggiornarlo quando nascono risorse stabili.
+
+## Identità e profilo
+
+- Progetto: **Greenfield Adventures**
+- Account: `113016737452`
+- Profilo CLI obbligatorio sul CX23: **`greenfield-adventures`**
+- Experience: new AWS experience (Builder ID / progetto) — non assumere login root classico
+
+## Regione
+
+- Regione obbligatoria per risorse Regionali: **`eu-north-1`**
+- Non creare Lambda, API Gateway, bucket Regionali, RDS, ecc. in altre Region
+- Verificare sempre `AWS_REGION` / `--region eu-north-1` / profilo
+
+## Sessioni e credenziali
+
+- Preferire `aws login` (sessione ~12h) a Access Key permanenti
+- Dopo login: `aws sts get-caller-identity --profile greenfield-adventures`
+- Cache tipica: `/root/.aws` (Hub può usare symlink sotto `/opt/core-automation/.aws`)
+- Non inventare chiavi; non scrivere secret in git o chat se evitabile
+- Se la sessione scade: rinnovare login (tunnel callback o `aws login --remote`)
+
+## MCP AWS
+
+- Hub: `/opt/core-automation/.cline-data/settings/cline_mcp_settings.json`
+- Server: `aws-mcp`, `awslabs.aws-documentation-mcp-server`, `awslabs.core-mcp-server`
+- `AWS_MCP_PROXY_PROFILES=greenfield-adventures`
+- Operazioni cloud: chiedere conferma esplicita (autoApprove conservativo)
+
+## Free Tier / budget
+
+- Restare nei limiti Free plan / crediti; stimare costi prima di servizi a pagamento
+- In caso di errori improvvisi di accesso: controllare spend limit / billing in AWS Settings
+- Niente “advanced features” senza OK esplicito
+
+## Risorse già attive (non ricreare alla cieca)
+
+- S3: `core-automation-backup-113016737452-eu-north-1` (backup CX23)
+- Lambda: `HelloCline` (python3.12, smoke serverless)
+- Dettagli, prospettive serverless/AI e checklist: vedi `CONTESTO_AWS_E_SVILUPPI.md`
+
+## Comportamento agente
+
+- Prima di provisioning: leggere `CONTESTO_AWS_E_SVILUPPI.md`
+- Preferire skill Agent Toolkit / MCP docs AWS per comportamenti aggiornati
+- Dopo deploy riuscito: aggiornare `CONTESTO_AWS_E_SVILUPPI.md` + `memory-bank/activeContext.md`

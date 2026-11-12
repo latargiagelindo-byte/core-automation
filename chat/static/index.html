@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Cline Chat</title>
+  <style>
+    :root {
+      --bg: #07070c;
+      --panel: #12121a;
+      --text: #f4f4f8;
+      --muted: #9a9aad;
+      --accent: #10b981;
+      --user: #052e1c;
+      --bot: #18181f;
+      --line: #2a2a36;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
+    body { display: flex; flex-direction: column; max-width: 720px; margin: 0 auto; }
+    header { display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem;
+      border-bottom: 1px solid var(--line); background: rgba(12,12,18,.92);
+      position: sticky; top: 0; backdrop-filter: blur(8px); z-index: 2; }
+    header img { width: 44px; height: 44px; border-radius: 12px;
+      box-shadow: 0 0 18px rgba(34,197,94,.45); }
+    header img.working { animation: pulseGlow 1.4s ease-in-out infinite; }
+    header h1 { font-size: 1.05rem; margin: 0; font-weight: 650; }
+    header p { margin: .15rem 0 0; color: var(--muted); font-size: .8rem; }
+    header p.working { color: var(--accent); }
+    a.hub { margin-left: auto; color: var(--muted); font-size: .8rem; text-decoration: none; }
+    #gate { flex: 1; display: none; place-items: center; padding: 1.5rem; }
+    #gate.show { display: grid; }
+    #gate .card { width: min(100%, 360px); background: var(--panel); border: 1px solid var(--line);
+      border-radius: 18px; padding: 1.25rem; text-align: center; }
+    #gate img { width: 96px; height: 96px; border-radius: 22px; margin: 0 auto .9rem;
+      box-shadow: 0 0 28px rgba(34,197,94,.4); display: block; }
+    #gate h2 { margin: 0 0 .4rem; font-size: 1.15rem; }
+    #gate p { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; line-height: 1.4; }
+    #gate input { width: 100%; border-radius: 12px; border: 1px solid var(--line);
+      background: #0c0c12; color: var(--text); padding: .75rem .85rem; font: inherit; margin-bottom: .75rem; }
+    #gate button, #send { border: 0; border-radius: 12px; background: linear-gradient(180deg, #34d399, #059669);
+      color: white; font-weight: 650; padding: .75rem 1rem; cursor: pointer; width: 100%; }
+    #chatui { flex: 1; display: none; flex-direction: column; min-height: 0; }
+    #chatui.show { display: flex; }
+    #log { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: .75rem; }
+    .msg { max-width: 92%; padding: .75rem .9rem; border-radius: 14px; line-height: 1.45;
+      white-space: pre-wrap; word-break: break-word; font-size: .95rem; }
+    .msg.user { align-self: flex-end; background: var(--user); border: 1px solid #14532d; }
+    .msg.assistant { align-self: flex-start; background: var(--bot); border: 1px solid var(--line); }
+    .msg.system { align-self: center; color: var(--muted); font-size: .8rem; background: transparent; border: 0; }
+    .msg.working {
+      align-self: flex-start; display: flex; align-items: center; gap: .65rem;
+      background: var(--bot); border: 1px solid #14532d; color: var(--text);
+      min-width: min(92%, 280px);
+    }
+    .msg.working .spin {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid rgba(16,185,129,.25); border-top-color: var(--accent);
+      animation: spin .8s linear infinite; flex: 0 0 auto;
+    }
+    .msg.working .label { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+    .msg.working .title { font-weight: 650; font-size: .9rem; color: var(--accent); }
+    .msg.working .detail { font-size: .78rem; color: var(--muted); white-space: normal; }
+    form#f { display: flex; gap: .5rem; padding: .75rem; border-top: 1px solid var(--line);
+      background: var(--panel); padding-bottom: calc(.75rem + env(safe-area-inset-bottom)); align-items: flex-end; }
+    #attach { display: none; }
+    #clip {
+      flex: 0 0 auto; width: 44px; height: 48px; border-radius: 12px; border: 1px solid var(--line);
+      background: #0c0c12; color: var(--muted); cursor: pointer; display: grid; place-items: center;
+      font-size: 1.15rem; line-height: 1; padding: 0;
+    }
+    #clip:hover, #clip.has-files { color: var(--accent); border-color: #14532d; }
+    #clip:disabled, textarea:disabled { opacity: .55; cursor: wait; }
+    #filesHint { display: none; padding: 0 .9rem .35rem; color: var(--muted); font-size: .75rem; }
+    #filesHint.show { display: block; }
+    textarea { flex: 1; resize: none; min-height: 48px; max-height: 140px; border-radius: 12px;
+      border: 1px solid var(--line); background: #0c0c12; color: var(--text);
+      padding: .7rem .8rem; font: inherit; }
+    #send { width: auto; min-width: 72px; }
+    #send:disabled { opacity: .5; cursor: wait; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 14px rgba(34,197,94,.35); }
+      50% { box-shadow: 0 0 26px rgba(34,197,94,.75); }
+    }
+    .msg.working { border-color: var(--accent); animation: workGlow 1.8s ease-in-out infinite; }
+    .msg.working .title { font-size: 1rem; font-weight: 700; }
+    @keyframes workGlow { 0%,100% { box-shadow: 0 0 8px rgba(16,185,129,.2); } 50% { box-shadow: 0 0 20px rgba(16,185,129,.55); } }
+    @media (prefers-reduced-motion: reduce) {
+      .msg.working, header img.working { animation: none; }
+      .msg.working .spin { animation-duration: 2.4s; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img id="logo" src="/chat/cline-chat-verde.png" alt="Cline" width="44" height="44" />
+    <div>
+      <h1>Cline Chat</h1>
+      <p id="statusLine">Scrivi qui. Il Hub resta per sessioni e impostazioni.</p>
+    </div>
+    <a class="hub" id="hubLink" href="/">Hub</a>
+  </header>
+
+  <div id="gate">
+    <div class="card">
+      <img src="/chat/cline-chat-verde.png" alt="" width="96" height="96" />
+      <h2>Codice stanza</h2>
+      <p>Sul telefono inseriscilo una volta. Poi resta salvato su questo apparecchio.</p>
+      <input id="roomInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Incolla il codice stanza" />
+      <button type="button" id="roomGo">Entra in chat</button>
+    </div>
+  </div>
+
+  <div id="chatui">
+    <div id="log" aria-live="polite"></div>
+    <div id="filesHint"></div>
+    <form id="f">
+      <input id="attach" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.txt,.md,.csv,.json,.doc,.docx,.xls,.xlsx,.odt,.rtf,image/*" />
+      <button type="button" id="clip" title="Allega file" aria-label="Allega file">📎</button>
+      <textarea id="input" rows="2" placeholder="Scrivi un messaggio…" enterkeyhint="send"></textarea>
+      <button type="submit" id="send">Invia</button>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    let roomSecret = (params.get("roomSecret") || localStorage.getItem("clineRoomSecret") || "").trim();
+    const gate = document.getElementById("gate");
+    const chatui = document.getElementById("chatui");
+    const hub = document.getElementById("hubLink");
+    const log = document.getElementById("log");
+    const form = document.getElementById("f");
+    const input = document.getElementById("input");
+    const send = document.getElementById("send");
+    const roomInput = document.getElementById("roomInput");
+    const roomGo = document.getElementById("roomGo");
+    const attach = document.getElementById("attach");
+    const clip = document.getElementById("clip");
+    const filesHint = document.getElementById("filesHint");
+    const logo = document.getElementById("logo");
+    const statusLine = document.getElementById("statusLine");
+    const history = [];
+    const idleStatus = "Scrivi qui. Il Hub resta per sessioni e impostazioni.";
+    const workPhrases = [
+      "Attendo la risposta…",
+      "Consulto memoria e strumenti…",
+      "Ancora un attimo, sto elaborando…",
+      "Quasi pronto…"
+    ];
+    let workTimer = null;
+    let workStartedAt = 0;
+    let busy = false;
+
+    function setHubLink() {
+      hub.href = roomSecret ? ("/?roomSecret=" + encodeURIComponent(roomSecret)) : "/";
+    }
+
+    function rememberRoom(value) {
+      roomSecret = (value || "").trim();
+      if (!roomSecret) return false;
+      localStorage.setItem("clineRoomSecret", roomSecret);
+      const url = new URL(location.href);
+      url.searchParams.set("roomSecret", roomSecret);
+      window.history.replaceState({}, "", url.pathname + "?" + url.searchParams.toString());
+      setHubLink();
+      return true;
+    }
+
+    function add(role, content) {
+      const el = document.createElement("div");
+      el.className = "msg " + role;
+      el.textContent = content;
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+      return el;
+    }
+
+    function formatElapsed(ms) {
+      const sec = Math.max(1, Math.floor(ms / 1000));
+      if (sec < 60) return sec + "s";
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return m + "m " + String(s).padStart(2, "0") + "s";
+    }
+
+    function setBusy(on) {
+      busy = !!on;
+      send.disabled = busy;
+      input.disabled = busy;
+      clip.disabled = busy;
+      attach.disabled = busy;
+      logo.classList.toggle("working", busy);
+      statusLine.classList.toggle("working", busy);
+      if (!busy) statusLine.textContent = idleStatus;
+    }
+
+    function startWorking() {
+      stopWorking();
+      workStartedAt = Date.now();
+      setBusy(true);
+      const el = document.createElement("div");
+      el.className = "msg working";
+      el.id = "workingMsg";
+      el.setAttribute("role", "status");
+      el.setAttribute("aria-live", "polite");
+      el.innerHTML =
+        '<div class="spin" aria-hidden="true"></div>' +
+        '<div class="label">' +
+          '<div class="title">Sto lavorando...</div>' +
+          '<div class="detail">Attendo la risposta… · 1s</div>' +
+        '</div>';
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+      let i = 0;
+      workTimer = setInterval(() => {
+        const detail = el.querySelector(".detail");
+        if (!detail) return;
+        const phrase = workPhrases[Math.floor(i / 4) % workPhrases.length];
+        detail.textContent = phrase + " · " + formatElapsed(Date.now() - workStartedAt);
+        statusLine.textContent = "Sto lavorando... " + formatElapsed(Date.now() - workStartedAt);
+        i += 1;
+        log.scrollTop = log.scrollHeight;
+      }, 1000);
+      statusLine.textContent = "Sto lavorando... 1s";
+      return el;
+    }
+
+    function stopWorking() {
+      if (workTimer) {
+        clearInterval(workTimer);
+        workTimer = null;
+      }
+      const el = document.getElementById("workingMsg");
+      if (el) el.remove();
+      setBusy(false);
+    }
+
+    function refreshFilesHint() {
+      const files = Array.from(attach.files || []);
+      if (!files.length) {
+        filesHint.classList.remove("show");
+        filesHint.textContent = "";
+        clip.classList.remove("has-files");
+        return;
+      }
+      filesHint.textContent = "Allegati: " + files.map((f) => f.name).join(", ");
+      filesHint.classList.add("show");
+      clip.classList.add("has-files");
+    }
+
+    function showChat() {
+      gate.classList.remove("show");
+      chatui.classList.add("show");
+      setHubLink();
+      if (!log.dataset.ready) {
+        add("system", "Pronto. I messaggi passano dal Hub Wingman sul server. Le risposte possono richiedere qualche decina di secondi.");
+        log.dataset.ready = "1";
+      }
+      input.focus();
+    }
+
+    function showGate() {
+      chatui.classList.remove("show");
+      gate.classList.add("show");
+      setHubLink();
+      roomInput.focus();
+    }
+
+    roomGo.addEventListener("click", () => {
+      if (!rememberRoom(roomInput.value)) {
+        roomInput.focus();
+        return;
+      }
+      showChat();
+    });
+    roomInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        roomGo.click();
+      }
+    });
+
+    clip.addEventListener("click", () => {
+      if (!busy) attach.click();
+    });
+    attach.addEventListener("change", refreshFilesHint);
+
+    if (roomSecret) {
+      rememberRoom(roomSecret);
+      showChat();
+    } else {
+      showGate();
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (busy) return;
+      const message = input.value.trim();
+      const files = Array.from(attach.files || []);
+      if ((!message && !files.length) || !roomSecret) return;
+      input.value = "";
+      const shown = message || ("[allegato] " + files.map((f) => f.name).join(", "));
+      add("user", shown);
+      history.push({ role: "user", content: shown });
+      startWorking();
+      try {
+        const fd = new FormData();
+        fd.append("roomSecret", roomSecret);
+        fd.append("message", message);
+        fd.append("history", JSON.stringify(history.slice(0, -1)));
+        for (const f of files) fd.append("files", f, f.name);
+        const res = await fetch("/chat/api/chat", {
+          method: "POST",
+          headers: { "X-Room-Secret": roomSecret },
+          body: fd,
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        stopWorking();
+        add("assistant", data.content || "");
+        history.push({ role: "assistant", content: data.content || "" });
+        attach.value = "";
+        refreshFilesHint();
+      } catch (err) {
+        stopWorking();
+        add("system", "Errore: " + (err && err.message ? err.message : err));
+      } finally {
+        if (document.getElementById("workingMsg")) stopWorking();
+        input.focus();
+      }
+    });
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        if (!busy) form.requestSubmit();
+      }
+    });
+  </script>
+</body>
+</html>

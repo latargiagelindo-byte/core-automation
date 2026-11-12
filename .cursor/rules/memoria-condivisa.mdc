@@ -1,0 +1,19 @@
+---
+description: Memoria condivisa breve in Git, per Cursor e Cline
+alwaysApply: true
+---
+
+# Memoria condivisa
+
+Fonte unica di codice e memoria: il repository in `/opt/core-automation`.
+
+File di stato:
+- `memory-bank/projectbrief.md`
+- `memory-bank/activeContext.md`
+- `memory-bank/progress.md`
+
+`activeContext.md` e `progress.md` si sintetizzano e si sovrascrivono.
+Restano brevi e sullo stato attuale. Niente diari: lo storico delle modifiche sta nei messaggi di commit.
+
+Scheda anagrafica, segreti, note di Actual e database restano fuori da Git.
+Il backup notturno non esiste. Lo stato di OmniRoute, solo se serve, si salva con `bin/backup_omniroute.sh` (massimo 2 copie).

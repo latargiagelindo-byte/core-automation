@@ -1,0 +1,5 @@
+# Non è installato. Controllo settimanale, solo lettura.
+# Per attivarlo, dopo una conferma esplicita:
+# crontab -e
+# e aggiungere questa riga (lunedì alle 09:00, ora del server):
+# 0 9 * * 1 /usr/bin/python3 /opt/core-automation/updater_monitor.py
