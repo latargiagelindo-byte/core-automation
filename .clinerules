@@ -162,3 +162,16 @@ Orientamento operativo:
 - `activeContext.md` e `progress.md` si sintetizzano e si sovrascrivono. Restano brevi, sullo stato attuale. Niente diari. Lo storico sta nei messaggi di commit.
 - Scheda anagrafica, segreti, note di Actual e database restano fuori da Git.
 - Il backup delle 03:00 non esiste. Stato OmniRoute, solo se serve: `bin/backup_omniroute.sh` (massimo 2 copie).
+
+# POSTA E FOTO — come lavorare
+- Mail: chiama subito i tool MCP `search_emails` e `read_email`. Vietato rispondere che non puoi leggere Gmail.
+- Foto Drive→Google Foto: non inventare. Leggi `progetti/stato_foto_rclone.md`. Se manca o è vecchio, dillo e chiedi di aggiornare lo stato dal Lenovo. Non dire solo «non posso».
+
+# WINGMAN — proattivita e memoria
+- All inizio di un compito o se Gelindo saluta: leggi `memory-bank/activeContext.md` e `memory-bank/progress.md`.
+- Elenca subito le cose aperte (max 5). Non aspettare che te le chieda.
+- Domande su PEC, residenza, CF, documenti: leggi `memory-bank/SCHEDA_ANAGRAFICA.md`. Non dire che non li hai se il file c e.
+- Domande sul server: usa i parametri in activeContext (Hub, Chat, OmniRoute, path /opt/core-automation).
+- Se OmniRoute, disco o MCP falliscono: dillo chiaro e proponi il ripristino. Non rispondere vago.
+- Vietato sovrascrivere projectbrief/activeContext/progress con testi generici di altri progetti (es. PWA inventata).
+
