@@ -1,6 +1,6 @@
 # Active context
 
-- Wing D13 aggiornata: confronti multi-store (>=2 store) + colonna caratteristica chiave.
-- Brave web_search e timeout 240s OK; prova confrontare letti su store diversi.
+- Wing: D13 anti-URL inventati + multi-store; D14 viaggi/treni/voli/alloggi via Brave.
+- Prossimo test: confronto prodotti con soli link reali, o itinerario treno/aereo.
 
-Updated: 2026-11-13 22:02 UTC
+Updated: 2026-11-13 22:10 UTC
