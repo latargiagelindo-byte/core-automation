@@ -1,6 +1,7 @@
 # Active context
 
-- Wing: web_search Brave attivo; lingua risposta SEMPRE italiano (SOUL/AGENTS/IDENTITY).
-- Prossimo: regola confronti prodotti; prova web_search da Telegram.
+- Wing: agents.defaults.timeoutSeconds=240; heartbeat in italiano.
+- Brave web_search OK; fallimenti Telegram erano hard_timeout a 90s.
+- Prossimo: riprovare ricerca letti 120x190 da Telegram.
 
-Updated: 2026-11-13 21:08 UTC
+Updated: 2026-11-13 21:21 UTC
