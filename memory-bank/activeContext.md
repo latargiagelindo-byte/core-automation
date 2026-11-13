@@ -1,6 +1,6 @@
 # Active context
 
-- Wing: D13 anti-URL inventati + multi-store; D14 viaggi/treni/voli/alloggi via Brave.
-- Prossimo test: confronto prodotti con soli link reali, o itinerario treno/aereo.
+- D14 stretta: Link = solo URL http(s) da web_search; vietato Orari/Voli placeholder.
+- Test Udine-Roma: Wing ha dato fasce utili ma senza URL reali.
 
-Updated: 2026-11-13 22:10 UTC
+Updated: 2026-11-13 22:13 UTC
