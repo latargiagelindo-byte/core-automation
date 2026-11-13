@@ -1,6 +1,5 @@
 # Progress
 
-- Alzato timeout agente 90->240s dopo timeout su ricerca letti.
-- Heartbeat prompt forzato in italiano; D13 confronti via web_search.
+- D13: obbligatorio multi-store e tabella Modello/Store/Misure/Caratteristica/Prezzo/Link.
 
-Updated: 2026-11-13 21:21 UTC
+Updated: 2026-11-13 22:02 UTC
