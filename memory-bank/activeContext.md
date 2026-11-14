@@ -1,17 +1,18 @@
 # Active context
 
-## Pausa — ripresa da qui
+Updated: 2026-11-14 10:17 UTC
 
-- Sessione interrotta sera 13/11: riprendere domani da test D14 (e D13 anti-URL).
-- Ultimo esito Wing Udine-Roma: tabella ok come fasce, ma Link placeholder (Orari/Voli) — D14 stretta già applicata.
-- Prossimo test Telegram: «Rifai Udine-Roma rispettando D14 stretta: solo URL reali nella colonna Link.»
-- Opzionale dopo: rifare letti 120x190 multi-store con soli URL da web_search.
+## Focus
+OpenClaw gateway stabilizzato su CX23 (heap 1536, MemoryHigh 1.6G / MemoryMax 1.85G).
 
-## Stato tecnico
+## Now
+- Gateway active, Telegram connected (polling), bind loopback :18789.
+- Workspace: PENDING.md symlink → state; TOOLS.md + HEARTBEAT.md ripristinati; plugins.allow=[brave, telegram].
+- Cron morning-0800-posta: messaggio aggiornato (no prompts_get vuoto).
+- Paperless healthcheck allineato a :8010 → healthy.
+- control-ui-tailscale.url chmod 600. Token non ruotato.
 
-- Brave Search: plugin + BRAVE_API_KEY + tools.web.search.provider=brave OK.
-- agents.defaults.timeoutSeconds=240; heartbeat prompt in italiano.
-- AGENTS: LINGUA italiano; D13 multi-store + anti-URL; D14 viaggi + Link http(s) obbligatori.
-- IKEA/CX23: resta D10 (Cloudflare 403).
-
-Updated: 2026-11-13 22:15 UTC
+## Avoid
+- Non rieseguire `openclaw doctor --fix` senza supervisione: può rimuovere TOOLS.md/HEARTBEAT.md.
+- Non alzare heap a 2048 su host 3.7 GiB.
+- Sandbox off e no fail2ban (scelta Gelindo).
