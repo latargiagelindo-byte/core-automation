@@ -1,9 +1,8 @@
 # Active context
 
-Aggiornato: 2026-11-15 16:50 UTC
+Aggiornato: 2026-11-17 13:54 UTC
 
-- Heartbeat `main`: `heartbeat_respond` era offerto ma rifiutato se il trigger non passava anche da `messages.visibleReplies=message_tool`. Ogni ciclo da 30 minuti chiudeva con `agent-runner-failure`.
-- Patch in `/root/.nvm/versions/node/v24.22.2/lib/node_modules/openclaw/dist/openclaw-tools-Do7h0W5U.mjs`: un trigger heartbeat accetta il tool. Backup `openclaw-tools-Do7h0W5U.mjs.bak_20261115_164324`.
-- Gateway riavviato 16:43 UTC. Prova `heartbeat-main`: ok, nessun invio Telegram (`deliveryStatus=not-requested`).
-- Dopo il primo ciclo i worker tornano circa a 1,45 GiB. `wingman-ascolto` resta fermo.
-- OpenClaw 2026.11.3: la patch va riapplicata dopo un upgrade del pacchetto.
+- Gateway: heap V8 768 MiB, MemoryHigh=1200M, MemoryMax=1450M. NODE_OPTIONS unifica IPv4 e il tetto heap, anche per i figli.
+- Riavvio 13:53 UTC, health 200, NRestarts=0. Subito dopo il cgroup e circa 1,07 GiB: sotto la soglia alta, con poco margine.
+- state/ pesa 65 MiB. memoryFlush acceso. I 1,2 GiB precedenti erano heap del processo, non sessioni su disco.
+- Patch heartbeat nel pacchetto npm 2026.11.3 ancora presente: va riapplicata dopo un upgrade.
