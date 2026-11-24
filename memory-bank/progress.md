@@ -1,7 +1,6 @@
 # Progress
 
-Aggiornato: 2026-11-17 20:00 UTC
+Aggiornato: 2026-11-24 10:15 UTC
 
-- Schema invio confermato sul MCP: `to`, `subject`, `body`. Wrapper modello: `dispatch_action` `{id, args}`.
-- Hook elefante aggiornato e gateway riavviato. Nessun nuovo invio in questo giro.
-- Domani: un turno reale che deve emettere `dispatch_action`, non JSON nel testo.
+- Ponte Lenovo: parte all'accesso, si rialza se cade. Archivista può avviarlo con `avvia_bridge` e non lo riavvia se è già su.
+- ZeroClaw è il bot. Archivista su Telegram ha Drive e le cartelle del Lenovo.

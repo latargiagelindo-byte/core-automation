@@ -1,7 +1,8 @@
 # Active context
 
-Aggiornato: 2026-11-17 20:00 UTC
+Aggiornato: 2026-11-24 10:15 UTC
 
-- Gateway in ascolto su 127.0.0.1:18789. Riavvio dopo il plugin elefante, circa 17:47 UTC. Heap 768 MiB e limiti cgroup restano quelli del pomeriggio.
-- `google-workspace__send_email` non è nell'array tools del modello. La chiamata nativa è `dispatch_action` con id `google-workspace__send_email` e args `to` (array), `subject`, `body`. Il campo `message` non esiste.
-- Il plugin `no-false-confirm` rifiuta il JSON scritto in chat se manca una tool_call nativa (`content` di tipo `toolCall`). I test del modello restano per il 18/11. Ultimo invio reale: `1a1eaa42e554bdd1`.
+- Telegram `home` è di Archivista. Il mittente è in allowlist. OpenClaw spento e disabled.
+- Archivista ha `lenovo_fs`, `lenovo_ctl` (`stato_bridge`, `avvia_bridge`) e `google-drive`. Gmail e Calendar restano su main e giramondo.
+- Il ponte Lenovo parte all'accesso dell'utente (`ArchivistaLenovoFs`), si rialza da solo, e `avvia_bridge` lo accende solo se è spento.
+- Contesto di main e giramondo: profilo `contesto`, 64000. OAuth Google in produzione. Storico prezzi Segugio acceso, senza file di stato.
